@@ -131,6 +131,24 @@ public final class PIPKit {
 
 final private class PIPKitWindow: UIWindow {
     
+    init() {
+        if #available(iOS 13, *) {
+            if let windowScene = UIApplication.shared.connectedScenes.filter({ $0.activationState == .foregroundActive }).first as? UIWindowScene {
+                super.init(windowScene: windowScene)
+            }
+            else {
+                super.init(frame: UIScreen.main.bounds)
+            }
+        }
+        else {
+            super.init(frame: UIScreen.main.bounds)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         guard let rootViewController = rootViewController else {
             return super.hitTest(point, with: event)
